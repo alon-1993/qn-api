@@ -1,0 +1,21 @@
+{
+    "name": "ashin33\/qn-api",
+    "description": "qn-api SDK",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "王云龙",
+            "email": "ashin_33@163.com"
+        }
+    ],
+    "require": {
+        "ext-openssl": "*",
+        "ext-json": "*",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ashin33\\QnApi\\": "src"
+        }
+    }
+}
