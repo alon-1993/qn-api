@@ -206,9 +206,10 @@ class QnApi
             curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:multipart/form-data', 'accept:application/json']); // 请求头
         } else {
             curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json', 'accept:application/json']); // 请求头
+            $data = json_encode($data);
         }
         curl_setopt($curl, CURLOPT_POST, true); // 发送一个常规的Post请求
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));   // 请求体
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);   // 请求体
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);          // 对认证证书来源的检查
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);          // 从证书中检查SSL加密算法是否存在
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60); // 设置响应超时
