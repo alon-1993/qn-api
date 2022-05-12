@@ -43,7 +43,7 @@ class QnApi
 
     }
 
-    public function encrypt($postdata)
+    private function encrypt($postdata)
     {
         $req['req_time'] = Date('YmdHis');
         $req['inst_id'] = $this->instId;
@@ -196,7 +196,7 @@ class QnApi
         return $sign === $result;
     }
 
-    public function send($url, $data = [], $hasExtra = false)
+    private function send($url, $data = [], $hasExtra = false)
     {
 
         $curl = curl_init();
