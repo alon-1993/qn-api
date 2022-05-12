@@ -43,7 +43,7 @@ class QnApi
 
     }
 
-    private function requestData($postdata)
+    public function encrypt($postdata)
     {
         $req['req_time'] = Date('YmdHis');
         $req['inst_id'] = $this->instId;
@@ -59,11 +59,11 @@ class QnApi
     /**
      * @throws SignException
      */
-    private function responseData($response)
+    public function decrypt($response)
     {
         $res = $response;
         if (!$this->verifySign($res['sign'], $response, $this->secret)) {
-            throw new SignException("验签失败",400);
+            throw new SignException("验签失败", 400);
         }
         $res['aes_key'] = $this->rsa($response['aes_key'], false);
         $res['data'] = $this->aes($res['aes_key'], $res['data'], false);
@@ -73,20 +73,28 @@ class QnApi
     /**
      * @param $url
      * @param $data
+     * @param array $extra
      * @return false|mixed
-     * @throws \Exception
+     * @throws SignException
      */
-    public function request($url, $data)
+    public function request($url, $data, $extra = [])
     {
         //加密,加密参数
-        $data = $this->requestData($data);
-        //发送请求
-        $response = $this->send($url, $data);
+        $data = $this->encrypt($data);
+        if (empty($extra)) {
+            //发送请求
+            $response = $this->send($url, $data);
+        } else {
+            foreach ($extra as $k => $v) {
+                $data["extra[" . $k . "]"] = $v;
+            }
+            $response = $this->send($url, $data, true);
+        }
 
         if (!empty($response)) {
             $res = json_decode($response, true);
             if ((isset($res['code']) && $res['code'] == 200)) {
-                $res = $this->responseData($res);
+                $res = $this->decrypt($res);
             }
             return $res;
 
@@ -188,18 +196,23 @@ class QnApi
         return $sign === $result;
     }
 
-    public function send($url , $data=array(), $header = []){
+    public function send($url, $data = [], $hasExtra = false)
+    {
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json; charset=utf-8;','accept:application/json']); // 请求头
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));   // 请求体
         curl_setopt($curl, CURLOPT_URL, $url);     // 请求地址
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); // 变量存储
+        if ($hasExtra) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:multipart/form-data', 'accept:application/json']); // 请求头
+        } else {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json', 'accept:application/json']); // 请求头
+        }
+        curl_setopt($curl, CURLOPT_POST, true); // 发送一个常规的Post请求
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));   // 请求体
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);          // 对认证证书来源的检查
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);          // 从证书中检查SSL加密算法是否存在
-        curl_setopt($curl, CURLOPT_POST, true); // 发送一个常规的Post请求
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60); // 设置响应超时
         curl_setopt($curl, CURLOPT_TIMEOUT, 60); // 设置传输超时
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); // 变量存储
         curl_setopt($curl, CURLINFO_HEADER_OUT, true); // 请求头信息
 
         $response = curl_exec($curl); // 执行操作
