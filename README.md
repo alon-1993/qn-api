@@ -52,10 +52,31 @@ var_dump($res);
 
 ## 可用方法
 
-|方法名称|中文名称|说明|
-|:---:|:----:|:---:|
-|request|发送请求|加密请求参数并请求清宁云服,并解密返回参数|
-|decrypt|解密返回|解密清宁云服返回参数,同样适用于异步回调的解密|
+|         方法名称          |     中文名称      |           说明            |
+|:---------------------:|:-------------:|:-----------------------:|
+|        request        |     发送请求      |  加密请求参数并请求清宁云服,并解密返回参数  |
+|        decrypt        |     解密返回      | 解密清宁云服返回参数,同样适用于异步回调的解密 |
+|       register        |    ⾃由职业者注册    |                         |
+|     batchRegister     |   ⾃由职业者批量注册   |                         |
+|  batchRegisterQuery   |  ⾃由职业者批量注册查询  |                         |
+|     idCardUpload      |    个⼈身份证上传    |                         |
+|   idCardFileUpload    | 个⼈身份证上传<表单文件> |                         |
+|      createTask       |    新建任务需求     |                         |
+|       taskList        |    任务需求查询     |                         |
+|  invoiceCategoryList  |    发票类目查询     |                         |
+|     taxSourceList     |     税源地查询     |                         |
+|      settlement       |     上传结算单     |                         |
+|    settlementQuery    |     结算查询      |                         |
+| settlementSingleQuery |    结算单笔查询     |                         |
+|     balanceQuery      |     余额查询      |                         |
+|     rechargeList      |    充值流水查询     |                         |
+|    settlementList     |    结算流水查询     |                         |
+|     invoiceApply      |     开票申请      |                         |
+|     invoiceQuery      |    开票申请查询     |                         |
+|     merchantApply     |     商户进件      |                         |
+|     merchantQuery     |    商户进件查询     |                         |
+|     merchantSign      |   发送企业签约短信    |                         |
+|   merchantSignQuery   |     签约查询      |                         |
 
 ## 更新
 

@@ -3,7 +3,16 @@
 namespace Ashin33\QnApi;
 
 use Ashin33\QnApi\Exceptions\SignException;
+use Ashin33\QnApi\Results\BalanceQueryResult;
+use Ashin33\QnApi\Results\InvoiceApplyResult;
+use Ashin33\QnApi\Results\InvoiceQueryResult;
+use Ashin33\QnApi\Results\MerchantQueryResult;
+use Ashin33\QnApi\Results\MerchantSignQueryResult;
+use Ashin33\QnApi\Results\MerchantSignResult;
+use Ashin33\QnApi\Results\PageResult;
 use Ashin33\QnApi\Results\QnResult;
+use Ashin33\QnApi\Results\SettlementQueryResult;
+use Ashin33\QnApi\Results\SettlementSingleQueryResult;
 
 class QnApi
 {
@@ -22,7 +31,7 @@ class QnApi
 		} else {
 			$this->qnPublicKey = "-----BEGIN PUBLIC KEY-----\n"
 				. wordwrap($qnPublicKey, 64, "\n", true)
-				. "\n-----END PUBLIC KEY-----";;
+				. "\n-----END PUBLIC KEY-----";
 		}
 		if (is_file($merchantPrivateKey)) {
 			$this->merchantPrivateKey = file_get_contents($merchantPrivateKey);
@@ -31,7 +40,7 @@ class QnApi
 				. wordwrap($merchantPrivateKey, 64, "\n", true)
 				. "\n-----END PRIVATE KEY-----";
 		}
-		$this->host = rtrim($host,'/');
+		$this->host = rtrim($host, '/');
 	}
 
 	private function aes($aesKey, $string, $encrypt = true)
@@ -242,7 +251,191 @@ class QnApi
 	 */
 	public function register($data)
 	{
-		$res = $this->request($this->host.'/api/customers', $data);
+		$res = $this->request($this->host . '/api/customers', $data);
 		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function batchRegister($data)
+	{
+		$res = $this->request($this->host . '/api/customer_batches', $data);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function batchRegisterQuery($data)
+	{
+		$res = $this->request($this->host . '/api/customer_batches/query', $data);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function idCardUpload($data)
+	{
+		$res = $this->request($this->host . '/api/identity_cards/upload', $data);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function idCardFileUpload($data, $idFrontFile, $idBackFile)
+	{
+		$extra = [
+			'id_front' => $idFrontFile,
+			'id_back' => $idBackFile
+		];
+		$res = $this->request($this->host . '/api/identity_cards/file_upload', $data, $extra);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function createTask($data)
+	{
+		$res = $this->request($this->host . '/api/tasks', $data);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function taskList($data)
+	{
+		$res = $this->request($this->host . '/api/tasks/index', $data);
+		return new PageResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function invoiceCategoryList($data)
+	{
+		$res = $this->request($this->host . '/api/invoice_categories/all', $data);
+		return new PageResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function taxSourceList($data)
+	{
+		$res = $this->request($this->host . '/api/tax_sources/all', $data);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function settlement($data)
+	{
+		$res = $this->request($this->host . '/api/settlements', $data);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function settlementQuery($data)
+	{
+		$res = $this->request($this->host . '/api/settlements/query', $data);
+		return new SettlementQueryResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function settlementSingleQuery($data)
+	{
+		$res = $this->request($this->host . '/api/settlements/single/query', $data);
+		return new SettlementSingleQueryResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function balanceQuery($data)
+	{
+		$res = $this->request($this->host . '/api/merchants/balance', $data);
+		return new BalanceQueryResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function rechargeList($data)
+	{
+		$res = $this->request($this->host . '/api/recharges/index', $data);
+		return new PageResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function settlementList($data)
+	{
+		$res = $this->request($this->host . '/api/settlements/index', $data);
+		return new PageResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function invoiceApply($data)
+	{
+		$res = $this->request($this->host . '/api/invoices', $data);
+		return new InvoiceApplyResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function invoiceQuery($data)
+	{
+		$res = $this->request($this->host . '/api/invoices/query', $data);
+		return new InvoiceQueryResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function merchantApply($data)
+	{
+		$res = $this->request($this->host . '/api/merchants/store', $data);
+		return new QnResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function merchantQuery($data)
+	{
+		$res = $this->request($this->host . '/api/merchants/query', $data);
+		return new MerchantQueryResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function merchantSign($data)
+	{
+		$res = $this->request($this->host . '/api/merchants/sign', $data);
+		return new MerchantSignResult($res);
+	}
+
+	/**
+	 * @throws SignException
+	 */
+	public function merchantSignQuery($data)
+	{
+		$res = $this->request($this->host . '/api/merchants/sign_query', $data);
+		return new MerchantSignQueryResult($res);
 	}
 }
