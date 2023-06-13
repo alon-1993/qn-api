@@ -14,6 +14,15 @@ class QnResult
 		$this->data = is_string($res['data']) ? json_decode($res['data'], true) : null;
 	}
 
+	public function toJsonString()
+	{
+		return json_encode([
+			'code' => $this->code,
+			'msg' => $this->msg,
+			'data' => $this->data
+		], JSON_UNESCAPED_UNICODE);
+	}
+
 	public function getCode()
 	{
 		return $this->code;
