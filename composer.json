@@ -20,5 +20,15 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.8"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ashin33\\QnApi\\ServiceProvider"
+            ],
+            "aliases": {
+                "QnApi": "Ashin33\\QnApi\\Facade"
+            }
+        }
     }
 }
