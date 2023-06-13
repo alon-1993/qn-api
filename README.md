@@ -3,8 +3,14 @@
 <p align="center"> 清宁云服api接口SDK</p>
 
 
-[toc]
-
+* [安装](#安装)
+* [请求可用方法](#请求可用方法)
+* [响应可用方法](#响应可用方法)
+* [用法示例](#用法示例)
+* [在laravel中使用](#在laravel中使用)
+    * [发布配置文件](#发布配置文件)
+    * [使用](#使用)
+* [更新扩展包](#更新扩展包)
 
 ## 安装
 
@@ -52,21 +58,20 @@ $ composer require ashin33/qn-api -vvv
 
 >具体使用请参考 [调用示例](https://github.com/ashin33/qn-api/blob/master/src/tests/QnApiTest.php)，支持使用request方法发起SDK中未定义的接口请求
 
-
-### 实例化api
-
 ```php
 $host = '清宁云服分配的实际请求域名';
 $qnPublicKey = '***.key';//清波公钥(文件路径或行内秘钥字符串)
 $merchantPrivateKey = '***.key';//商户私钥(文件路径或行内秘钥字符串)
 $instId = '********';//清波分配的商户id
 $secret = '*************************';//清波分配的秘钥
-$api = new Ashin33\QnApi\QnApi($instId, $secret, $qnPublicKey, $merchantPrivateKey,$host);
-````
+$api = new Ashin33\QnApi\QnApi(
+    $instId, 
+    $secret,
+    $qnPublicKey,
+    $merchantPrivateKey,
+    $host
+);
 
-### 普通接口(以自由职业者注册接口为例)
-
-```php
 $data = [
     "customer_name" => "安*",
     "cert_no" => "1301****7389",
@@ -75,22 +80,7 @@ $data = [
     "bank_phone" => "156****6907"
 ];
 $res = $api->register($data);
-var_dump($res->isSuccess());
-````
-
-### 带附件的接口(以身份证信息上传接口为例)
-
-```php
-$data = [
-    'customer_name' => '安安',
-    'cert_no' => '130102200101027389',
-];
-
-$idFront = new CURLFILE(__DIR__ . '/files/front.jpg');
-$idBack = new CURLFILE(__DIR__ . '/files/back.jpg');
-
-$res = $api()->idCardFileUpload($data, $idFront, $idBack);
-var_dump($res->isSuccess());
+var_dump($res->isSuccess());//判断接口请求是否成功
 ````
 
 ## 在laravel中使用
