@@ -194,6 +194,7 @@ class QnApiTest extends TestCase
 		try {
 			$res = $this->getApi()->createTask($data);
 			$this->assertTrue($res->isSuccess());
+            echo 'task_id:' . $res->getTaskId(), PHP_EOL;
 		} catch (\Exception $e) {
 			echo $e->getMessage();
 			$this->fail();
