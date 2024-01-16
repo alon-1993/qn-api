@@ -4,6 +4,7 @@ namespace Ashin33\QnApi;
 
 use Ashin33\QnApi\Exceptions\SignException;
 use Ashin33\QnApi\Results\BalanceQueryResult;
+use Ashin33\QnApi\Results\CreateTaskResult;
 use Ashin33\QnApi\Results\InvoiceApplyResult;
 use Ashin33\QnApi\Results\InvoiceQueryResult;
 use Ashin33\QnApi\Results\MerchantQueryResult;
@@ -301,7 +302,7 @@ class QnApi
 	public function createTask($data)
 	{
 		$res = $this->request($this->host . '/api/tasks', $data);
-		return new QnResult($res);
+		return new CreateTaskResult($res);
 	}
 
 	/**
