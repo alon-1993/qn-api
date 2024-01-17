@@ -2,6 +2,8 @@
 
 namespace Ashin33\QnApi;
 
+use App\Models\ZhenXing\ZhenXingSettlement;
+use App\Modules\ZhenXingBank\ZhenXingBankApi;
 use Ashin33\QnApi\Exceptions\SignException;
 use Ashin33\QnApi\Results\BalanceQueryResult;
 use Ashin33\QnApi\Results\CreateTaskResult;
@@ -12,6 +14,7 @@ use Ashin33\QnApi\Results\MerchantSignQueryResult;
 use Ashin33\QnApi\Results\MerchantSignResult;
 use Ashin33\QnApi\Results\PageResult;
 use Ashin33\QnApi\Results\QnResult;
+use Ashin33\QnApi\Results\SettlementNotifyResult;
 use Ashin33\QnApi\Results\SettlementQueryResult;
 use Ashin33\QnApi\Results\SettlementSingleQueryResult;
 
@@ -439,4 +442,22 @@ class QnApi
 		$res = $this->request($this->host . '/api/merchants/sign_query', $data);
 		return new MerchantSignQueryResult($res);
 	}
+
+    /**
+     * @throws SignException
+     */
+    public function settlementNotify($data)
+    {
+        $decrypt = $this->decrypt($data);
+        return new SettlementNotifyResult($decrypt);
+    }
+
+    /**
+     * @throws SignException
+     */
+    public function refundNotify($data)
+    {
+        $decrypt = $this->decrypt($data);
+        return new SettlementNotifyResult($decrypt);
+    }
 }
