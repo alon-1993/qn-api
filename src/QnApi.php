@@ -2,8 +2,6 @@
 
 namespace Ashin33\QnApi;
 
-use App\Models\ZhenXing\ZhenXingSettlement;
-use App\Modules\ZhenXingBank\ZhenXingBankApi;
 use Ashin33\QnApi\Exceptions\SignException;
 use Ashin33\QnApi\Results\BalanceQueryResult;
 use Ashin33\QnApi\Results\CreateTaskResult;
@@ -14,6 +12,7 @@ use Ashin33\QnApi\Results\MerchantSignQueryResult;
 use Ashin33\QnApi\Results\MerchantSignResult;
 use Ashin33\QnApi\Results\PageResult;
 use Ashin33\QnApi\Results\QnResult;
+use Ashin33\QnApi\Results\RefundNotifyResult;
 use Ashin33\QnApi\Results\SettlementNotifyResult;
 use Ashin33\QnApi\Results\SettlementQueryResult;
 use Ashin33\QnApi\Results\SettlementSingleQueryResult;
@@ -458,6 +457,6 @@ class QnApi
     public function refundNotify($data)
     {
         $decrypt = $this->decrypt($data);
-        return new SettlementNotifyResult($decrypt);
+        return new RefundNotifyResult($decrypt);
     }
 }
